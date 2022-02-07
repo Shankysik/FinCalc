@@ -1,0 +1,134 @@
+#:import MDDropdownMenu kivymd.uix.menu.MDDropdownMenu
+<NumInput@MDTextField>:
+    multiline: False
+    required: True
+    helper_text: "Это поле обязательно для заполнения"
+    helper_text_mode: "on_error"
+    input_filter: 'int'
+<TextLabel@Label>:
+    color: 0,0,0,1
+    font_size: sp(25)
+    halign: 'left'
+    valign: 'middle'
+    text_size: self.size
+
+<Calc>:
+    orientation: 'vertical'
+    total: total
+    profit: profit
+    start: start
+    incom: incom
+    percent: percent
+    time: time
+    kapa: kapa
+    popoln: popoln
+
+    AnchorLayout:
+        id: tool
+        anchor_x: 'center'
+        anchor_y: 'top'
+        size_hint_y: 0.15
+
+        MDToolbar:
+            size_hint_y: 1
+            id: toolbar
+            font_size: sp(25)
+            title: "Калькулятор финансов"
+            md_bg_color: app.theme_cls.primary_color
+            background_palette: "Red"
+            elevation: 10
+            right_action_items: [["comment-question", lambda x:MDDropdownMenu(items=app.menu_items, width_mult=3).open(self.ids['right_actions'])]]
+
+    ScrollView:
+        size_hint_x: None
+        width: box.width
+        pos_hint: {"center_x": .5}
+        bar_width: 0
+
+        BoxLayout:
+            id: box
+            padding: 0
+            size_hint: None, None
+            size: tool.width, self.minimum_height
+            #width: 100
+            spacing: dp(70)
+            orientation: "vertical"
+            pos_hint: {"center_x": .5}
+            BoxLayout:
+                orientation: "vertical"
+                size_hint_y: None
+                height: self.minimum_height
+                padding: dp(30)
+
+
+                NumInput:
+                    id: start
+                    hint_text: "Первоначальная сумма"
+
+                NumInput:
+                    id: percent
+                    hint_text: "Процентная ставка"
+                    max_text_length: 6
+                    input_filter: 'float'
+                    helper_text: "Поле должно быть заполненно но не более 6 символов"
+
+                NumInput:
+                    id: time
+                    hint_text: "Срок инвестирования в годах"
+                    max_text_length: 4
+                    input_filter: 'float'
+                    helper_text: "Поле должно быть заполненно но не более 4 символов"
+
+                NumInput:
+                    id: kapa
+                    hint_text: "Количество капитализаций в году"
+
+                MDTextField:
+                    id: popoln
+                    hint_text: "Сумма пополнения"
+                    helper_text: "Сумма которая будет добавлятся в начале каждого периода"
+                    helper_text_mode: "persistent"
+                    input_filter: 'int'
+
+            GridLayout:
+                cols: 2
+                padding: dp(30)
+                size_hint_y: None
+
+                BoxLayout:
+                    spacing: dp(50)
+                    orientation: "vertical"
+
+                    TextLabel:
+                        text: 'Итоговая сумма:'
+
+                    TextLabel:
+                        text: 'Прибыль:'
+
+                    TextLabel:
+                        text: 'Доходность:'
+                BoxLayout:
+                    spacing: dp(50)
+                    orientation: "vertical"
+
+                    TextLabel:
+                        id: total
+                        text: '0'
+
+                    TextLabel:
+                        id: profit
+                        text: '0'
+
+                    TextLabel:
+                        id: incom
+                        text: '0'
+
+
+
+    AnchorLayout:
+        size_hint_y: 0.15
+        MDFillRoundFlatButton:
+            pos_hint: {"center_x": .5}
+            background_palette: "Red"
+            text: "Расcчитать"
+            on_release: root.Calc()
